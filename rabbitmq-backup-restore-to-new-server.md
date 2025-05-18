@@ -61,6 +61,28 @@ This summary outlines the **types of backup methods**, their **dependencies**, *
   ```
 - Works in Docker, VM, or bare metal.
 - Ensures all Mnesia data is valid and fully restored.
+- Set the Same Node Name on the New RabbitMQ (Recommended for Simplicity)
+
+```sh
+docker-compose.yml
+```
+
+```sh
+version: '3'
+services:
+  rabbitmq:
+    image: rabbitmq:3.12-management
+    hostname: old-hostname
+    container_name: rabbitmq
+    environment:
+      - RABBITMQ_NODENAME=rabbit@old-hostname
+    volumes:
+      - ./mnesia:/var/lib/rabbitmq/mnesia
+      - ./config:/etc/rabbitmq
+    ports:
+      - 15672:15672
+      - 5672:5672
+```
 
 ##### ⚠️ Option B: **Export and Import Definitions**
 - Best for: Moving configuration only.
